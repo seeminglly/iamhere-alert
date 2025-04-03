@@ -7,7 +7,7 @@ from datetime import datetime
 #name : 사용자 이름
 #schedule_time[] : 사용자의 스케쥴 시작 시간(ex.09:00)
 
-
+#하드코딩(학생+수업 스케쥴 데이터베이스)
 users = [
     {
     "name":"강세민",
