@@ -10,7 +10,7 @@
 # FINGERPRINT_BAUDRATE = 57600
 
 DB_CONFIG = {
-    "host": "34.64.123.160",        # 외부 DB IP
+    "host": "34.22.92.10",        # 외부 DB IP
     "user": "teamuser",
     "password": "iamhere123",
     "database": "iamhere",
