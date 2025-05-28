@@ -5,10 +5,18 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 from config import DB_CONFIG
 
-DATABASE_URL = "mysql+pymysql://teamuser:0718@34.64.123.160:3306/iamhere"
+DATABASE_URL = "mysql+pymysql://teamuser:0718@34.64.121.178:3306/iamhere"
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# ✅ FastAPI 의존성 주입용 get_db
+def get_db():
+    db: Session = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 Base = declarative_base()
 

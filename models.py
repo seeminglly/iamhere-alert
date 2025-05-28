@@ -1,4 +1,4 @@
-from sqlalchemy import Column, BigInteger, String, Enum, Time, Date, ForeignKey, Text, TIMESTAMP
+from sqlalchemy import Integer, Column, BigInteger, String, Enum, Time, Date, ForeignKey, Text, TIMESTAMP
 from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
@@ -6,11 +6,14 @@ Base = declarative_base()
 # ✅ users 테이블
 class User(Base):
     __tablename__ = "users"
-
-    user_id = Column(BigInteger, primary_key=True, autoincrement=True)
-    student_id = Column(String(100), nullable=False)
-    name = Column(String(100), nullable=False)
-    major = Column(String(255), nullable=False)
+    user_id = Column(Integer, primary_key=True)
+    name = Column(String(100))
+    role = Column(Enum("학생", "교수"))
+    password = Column(String(100))
+    login_id = Column(String(100))
+    student_id = Column(String(50))
+    major = Column(String(100))
+    fcm_token = Column(Text)  # ✅ FCM 토큰 필드 추가
 
 # ✅ lectures 테이블
 class Lecture(Base):
