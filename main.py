@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from monitor.monitor_second_check import monitor_attendance
 from scheduler.scheduler import start_scheduler
-from routers import bluetooth_api, second_check_api, attendance_api, statistics_api, today_lecture_api
+from routers import bluetooth_api, second_check_api, attendance_api, statistics_api, today_lecture_api, login
 from fastapi.middleware.cors import CORSMiddleware
 from admin_router import attendance, summary, alerts
 #from scheduler import monitor_attendance
@@ -50,3 +50,4 @@ app.include_router(statistics_api.router)
 app.include_router(attendance.router)
 app.include_router(summary.router)
 app.include_router(alerts.router)
+app.include_router(login.router)
