@@ -1,39 +1,38 @@
 from fastapi import APIRouter, HTTPException
-from models import LoginRequest
-from models import LoginResponse
+from models import LoginRequest, LoginResponse
 from db import get_db_connection
-
-
 from auth.createToken import CreateToken
 
-
-router = APIRouter()# 로그인 API
-
+router = APIRouter()
 
 @router.post("/login", response_model=LoginResponse)
 async def login(request: LoginRequest):
-    # 사용자 확인
+    # DB 연결 및 사용자 조회
     conn = get_db_connection()
     cursor = conn.cursor()
 
     sql = "SELECT * FROM users WHERE login_id = %s AND password = %s"
     cursor.execute(sql, (request.login_id, request.password))
     user = cursor.fetchone()
+    conn.close()
 
     if not user:
-        conn.close()
         raise HTTPException(status_code=401, detail="잘못된 로그인 정보입니다.")
-    conn.close()
-    
+
     # 토큰 생성
     try:
         access_token = CreateToken(data={"sub": request.login_id})
-        #Send_alarm(access_token) //학생인지 교수인지, userid를 보내야하나?
-        return LoginResponse(access_token=access_token, token_type="bearer",user_name=user['name'], user_id=user['login_id'])#today_lectures
+
+        return LoginResponse(
+            access_token=access_token,
+            token_type="bearer",
+            user_id=str(user["user_id"]),
+            user_name=user["name"],  # 이름
+            student_number=user.get("student_number"),  # ✅ 학번
+            role=user.get("role")  # 예: 학생, 교수 등
+        )
+
     except Exception as e:
-        # 여기서 예외 로그 출력
         print(f"Login error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
-    
-
 
